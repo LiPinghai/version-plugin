@@ -37,22 +37,95 @@ class VersionPlugin {
     compiler.hooks.emit.tap('Version Plugin',
       compilation => {
         const {
+          name = "VERSION_INFO",
           chunks,
+          dataOption = {},
         } = this.options;
 
         const files = getFiles(compilation.entrypoints, chunks);
 
-        const git_info = {
-          branch: exec('git rev-parse --abbrev-ref HEAD').toString()
-            .trim(),
-          commit: exec('git rev-parse --short HEAD').toString()
-            .trim(),
+        const defaultDataOption = {
+          git_branch: {
+            default: true,
+            func () {
+              return exec('git rev-parse --abbrev-ref HEAD').toString().trim();
+            }
+          },
+          git_commit_hash: {
+            default: true,
+            func () {
+              return exec('git show -s --format=%h').toString().trim();
+            }
+          },
+          git_commit_fullhash: {
+            default: false,
+            func () {
+              return exec('git show -s --format=%H').toString().trim();
+            }
+          },
+          git_commit_time: {
+            default: false,
+            func () {
+              return exec('git show -s --format=%cI').toString().trim();
+            }
+          },
+          git_commit_author: {
+            default: false,
+            func () {
+              return exec('git show -s --format=%an').toString().trim();
+            }
+          },
+          git_commit_commiter: {
+            default: false,
+            func () {
+              return exec('git show -s --format=%cn').toString().trim();
+            }
+          },
+          git_commit_message: {
+            default: false,
+            func () {
+              return exec('git show -s --format=%b').toString().trim();
+            }
+          },
+          package_version: {
+            default: false,
+            func () {
+              return process.env.npm_package_version;
+            }
+          },
+          build_time: {
+            default: false,
+            func () {
+              return new Date().toISOString();
+            }
+          },
         }
 
-        const gitString = `window.VERSION_INFO = ${JSON.stringify(git_info)};\n`
+        const VERSION_INFO = {}
+
+        const dataNameList = Object.keys(defaultDataOption).concat(Object.keys(dataOption))
+
+        for (let dataName of dataNameList) {
+
+          if (typeof dataOption[dataName] === 'undefined') {
+            if (defaultDataOption[dataName] && defaultDataOption[dataName].default) {
+              VERSION_INFO[dataName] = defaultDataOption[dataName].func()
+            }
+          } else if (typeof dataOption[dataName] === 'boolean') {
+            if (dataOption[dataName] && defaultDataOption[dataName]) {
+              VERSION_INFO[dataName] = defaultDataOption[dataName].func()
+            }
+          } else if (typeof dataOption[dataName] === 'function') {
+            VERSION_INFO[dataName] = dataOption[dataName]()
+          } else {
+            VERSION_INFO[dataName] = dataOption[dataName]
+          }
+        }
+
+        const vsrsionString = `window.${name} = ${JSON.stringify(VERSION_INFO)};\n`
 
         files.js.map(jsFilename => {
-          compilation.assets[jsFilename] = new sources.ConcatSource(gitString, compilation.assets[jsFilename],);
+          compilation.assets[jsFilename] = new sources.ConcatSource(vsrsionString, compilation.assets[jsFilename],);
         })
       })
 
