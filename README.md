@@ -59,6 +59,7 @@ Example:
 ```js
 new VersionPlugin({
   name: '_v_',
+  mode: ['production', 'development'],
   dataOption:{
     git_commit_hash: false,
     git_commit_fullhash: true,
