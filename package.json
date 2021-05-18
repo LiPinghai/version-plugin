@@ -1,6 +1,6 @@
 {
   "name": "version-plugin",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A webpack plugin for injecting version info to project.",
   "main": "main.js",
   "scripts": {

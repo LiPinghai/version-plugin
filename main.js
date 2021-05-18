@@ -36,11 +36,26 @@ class VersionPlugin {
 
     compiler.hooks.emit.tap('Version Plugin',
       compilation => {
+        const currentmode = compilation.options.mode 
+
         const {
           name = "VERSION_INFO",
+          mode = "development",
           chunks,
           dataOption = {},
         } = this.options;
+
+        if (typeof mode === 'string') {
+          if (mode !== 'all' && currentmode !== mode) {
+            return
+          }
+        } else if (mode instanceof Array) {
+          if (mode.indexOf(currentmode) < 0) {
+            return
+          }
+        } else {
+          throw new Error('[VersionPlugin] mode invalid')
+        }
 
         const files = getFiles(compilation.entrypoints, chunks);
 

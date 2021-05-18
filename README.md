@@ -27,11 +27,16 @@ Then run `npm run dev`or `npm run build`, `version-plugin` will inject `VERSION_
 
 ### Plugin Options
 
-|              Name             |     Type    |                Default                |                       Description               |
-| :---------------------------: | :---------: | :-----------------------------------: | :---------------------------------------------- |
-|        **`name`**             | `{String}`  |             `VERSION_INFO`            | The variable name inject to global              |
-|**[`dataOption`](#dataOption)**| `{Object}`  |                  {}                   | Configure the version content                   |
+|              Name             |       Type      |                Default                |                       Description               |
+| :---------------------------: | :-------------: | :-----------------------------------: | :---------------------------------------------- |
+|        **`name`**             |    `{String}`   |             `VERSION_INFO`            | The variable name inject to global              |
+|      **[`mode`](#mode)**      |`{'all'\|String\|Array}`|             `development`            | Specify webpack mode that Version-Plugin work  |
+|**[`dataOption`](#dataOption)**|    `{Object}`   |                  {}                   | Configure the version content                   |
 
+
+### mode
+
+For safe reason, Version Plugin **only** work in development mode by default. You can change to `all` make it alway available. Specify a mode name or list also ok.
 
 ### dataOption
 
