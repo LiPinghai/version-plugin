@@ -37,7 +37,17 @@ Then run `npm run dev`or `npm run build`, `version-plugin` will inject `VERSION_
 
 Version Plugin will inject `git_branch` and `git_commit_hash` by default. 
 
-And`git_commit_fullhash`/`git_commit_time`/`git_commit_author`/`git_commit_commiter`/`git_commit_message`/`package_version`/`build_time` are selectable. Your can assign Boolean / String / Number value or function. Extra data also acceptable
+And 
+```
+git_commit_fullhash
+git_commit_time
+git_commit_author
+git_commit_commiter
+git_commit_message
+package_version
+build_time
+```
+are selectable. Your can set `true` to make it work, or `String` / `Number` value or function to overwrite. Extra data also acceptable. 
 
 Example:
 
@@ -47,6 +57,7 @@ new VersionPlugin({
   dataOption:{
     git_commit_hash: false,
     git_commit_fullhash: true,
+    git_commit_author: true,
     package_version: () => '1.0.0',
     extra_data_foo: 'extra_data_bar'
   }
@@ -62,6 +73,7 @@ then in broswer's console:
 {
   git_branch: "develop",
   git_commit_fullhash: "c3252175510b100a4a139f2af4b3f73ef753483a",
+  git_commit_author: 'LiPinghai',
   package_version: "1.0.0", 
   extra_data_foo: "extra_data_bar"
 }
