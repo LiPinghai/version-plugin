@@ -2,6 +2,8 @@
 
 webpack plugin for injecting *version info*(git npm etc) to project.
 
+[中文文档](https://github.com/LiPinghai/version-plugin/blob/main/READM.cn.md)
+
 ## Getting Started
 
 To begin, you'll need to install `version-plugin`:
@@ -10,7 +12,7 @@ To begin, you'll need to install `version-plugin`:
 npm install version-plugin -D
 ```
 
-Then add the loader and the plugin to your webpack config. For example:
+Then add the plugin to your webpack config. For example:
 
 **webpack.config.js**
 ```
